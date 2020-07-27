@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fpg.ec.group.dao.GroupUtilDAO" >
+
+   <!-- selectSequenceNumber ############################################### -->
+   <select id="selectSequenceNumber" resultType="java.lang.String">
+       
+      Declare @NewSeqVal int
+      Exec @NewSeqVal =  P_GetNewSeqVal_Group
+      select @NewSeqVal as NEXTVAL
+
+   </select>	
+
+   <!-- selectListMethod ################################################### -->
+   
+	<!-- Dp Start-Dp -->
+	<sql id="selectDpListConditions">
+		from Dp
+		<where>
+           
+           <if test="xuid != '' ">
+              Xuid = #{xuid,jdbcType=NVARCHAR}
+           </if>
+           <if test="dpid != '' ">
+              AND DpId = #{dpid,jdbcType=NVARCHAR}
+           </if>
+           <if test="dpnm != '' ">
+              AND DpNm = #{dpnm,jdbcType=NVARCHAR}
+           </if>
+           <if test="dpidLikeSrh != '' ">
+              AND DpId like '%'+#{dpidLikeSrh}+'%'
+           </if>
+           <if test="dpidLikeIgnCaseSrh != '' ">
+              AND UPPER(DpId) like '%'+UPPER(#{dpidLikeIgnCaseSrh})+'%'
+           </if>
+           <if test="dpidIgnCaseSrh != '' ">
+              AND UPPER(DpId) = UPPER(#{dpidIgnCaseSrh})
+           </if>
+           <if test="dpidIsNotEmptySrh != '' ">
+              AND (DpId is not null and DpId <![CDATA[ <> ]]> '')
+           </if>
+           <if test="dpidIsEmptySrh != '' ">
+              AND (DpId is null or DpId = '')
+           </if>
+           <if test="dpnmLikeSrh != '' ">
+              AND DpNm like '%'+#{dpnmLikeSrh}+'%'
+           </if>
+           <if test="dpnmLikeIgnCaseSrh != '' ">
+              AND UPPER(DpNm) like '%'+UPPER(#{dpnmLikeIgnCaseSrh})+'%'
+           </if>
+           <if test="dpnmIgnCaseSrh != '' ">
+              AND UPPER(DpNm) = UPPER(#{dpnmIgnCaseSrh})
+           </if>
+           <if test="dpnmIsNotEmptySrh != '' ">
+              AND (DpNm is not null and DpNm <![CDATA[ <> ]]> '')
+           </if>
+           <if test="dpnmIsEmptySrh != '' ">
+              AND (DpNm is null or DpNm = '')
+           </if>
+
+        </where>
+	</sql>
+	
+	<select id="selectDpList" resultType="com.fpg.ec.group.model.Dp" parameterType="com.fpg.ec.group.model.condition.DpCondition">
+		select a.* from (
+		select Xuid, DpId, DpNm
+			,ROW_NUMBER() OVER (
+					<choose>
+					    <when test="orderByList !=null and orderByList.size > 0 ">
+					         order by 
+						     <foreach collection="orderByList" item="orderByField" open="" close="" separator=",">
+					            ${orderByField}
+					         </foreach>
+					    </when>
+					    <otherwise>
+					         order by Xuid
+					    </otherwise>
+					</choose>
+			) AS rownum
+			<include refid="selectDpListConditions" />
+		) a
+		<where>
+		   <if test="startCount != '' " >
+		      rownum <![CDATA[ >= ]]> #{startCount}
+		   </if>
+		   <if test="endCount != '' " >
+		      AND rownum <![CDATA[ <= ]]> #{endCount}
+		   </if>
+		</where>
+	</select>
+
+	<select id="selectDpListCount" resultType="java.lang.Integer" parameterType="com.fpg.ec.group.model.condition.DpCondition">
+		select count(1) totalCount
+		<include refid="selectDpListConditions" />
+	</select>
+    <!-- Dp End-Dp -->
+	
+	<!-- Employee Start-Employee -->
+	<sql id="selectEmployeeListConditions">
+		from Employee
+		<where>
+           
+           <if test="xuid != '' ">
+              Xuid = #{xuid,jdbcType=NVARCHAR}
+           </if>
+           <if test="empid != '' ">
+              AND EmpId = #{empid,jdbcType=NVARCHAR}
+           </if>
+           <if test="empnm != '' ">
+              AND EmpNm = #{empnm,jdbcType=NVARCHAR}
+           </if>
+           <if test="dpid != '' ">
+              AND DpId = #{dpid,jdbcType=NVARCHAR}
+           </if>
+           <if test="gender != '' ">
+              AND Gender = #{gender,jdbcType=NVARCHAR}
+           </if>
+           <if test="tel != '' ">
+              AND Tel = #{tel,jdbcType=NVARCHAR}
+           </if>
+           <if test="addr != '' ">
+              AND Addr = #{addr,jdbcType=NVARCHAR}
+           </if>
+           <if test="age != '' ">
+              AND Age = #{age,jdbcType=NVARCHAR}
+           </if>
+           <if test="gfemp != '' ">
+              AND GfEmp = #{gfemp,jdbcType=NVARCHAR}
+           </if>
+           <if test="gftm != '' ">
+              AND GfTm = #{gftm,jdbcType=NVARCHAR}
+           </if>
+           <if test="txemp != '' ">
+              AND TxEmp = #{txemp,jdbcType=NVARCHAR}
+           </if>
+           <if test="txtm != '' ">
+              AND TxTm = #{txtm,jdbcType=NVARCHAR}
+           </if>
+           <if test="gftmStartDate != '' ">
+              AND GfTm <![CDATA[ >= ]]> #{gftmStartDate,jdbcType=NVARCHAR}
+           </if>
+           <if test="gftmEndDate != '' ">
+              AND GfTm <![CDATA[ <= ]]> #{gftmEndDate,jdbcType=NVARCHAR}
+           </if>
+           <if test="txtmStartDate != '' ">
+              AND TxTm <![CDATA[ >= ]]> #{txtmStartDate,jdbcType=NVARCHAR}
+           </if>
+           <if test="txtmEndDate != '' ">
+              AND TxTm <![CDATA[ <= ]]> #{txtmEndDate,jdbcType=NVARCHAR}
+           </if>
+           <if test="empidLikeSrh != '' ">
+              AND EmpId like '%'+#{empidLikeSrh}+'%'
+           </if>
+           <if test="empidLikeIgnCaseSrh != '' ">
+              AND UPPER(EmpId) like '%'+UPPER(#{empidLikeIgnCaseSrh})+'%'
+           </if>
+           <if test="empidIgnCaseSrh != '' ">
+              AND UPPER(EmpId) = UPPER(#{empidIgnCaseSrh})
+           </if>
+           <if test="empidIsNotEmptySrh != '' ">
+              AND (EmpId is not null and EmpId <![CDATA[ <> ]]> '')
+           </if>
+           <if test="empidIsEmptySrh != '' ">
+              AND (EmpId is null or EmpId = '')
+           </if>
+           <if test="empnmLikeSrh != '' ">
+              AND EmpNm like '%'+#{empnmLikeSrh}+'%'
+           </if>
+           <if test="empnmLikeIgnCaseSrh != '' ">
+              AND UPPER(EmpNm) like '%'+UPPER(#{empnmLikeIgnCaseSrh})+'%'
+           </if>
+           <if test="empnmIgnCaseSrh != '' ">
+              AND UPPER(EmpNm) = UPPER(#{empnmIgnCaseSrh})
+           </if>
+           <if test="empnmIsNotEmptySrh != '' ">
+              AND (EmpNm is not null and EmpNm <![CDATA[ <> ]]> '')
+           </if>
+           <if test="empnmIsEmptySrh != '' ">
+              AND (EmpNm is null or EmpNm = '')
+           </if>
+           <if test="dpidLikeSrh != '' ">
+              AND DpId like '%'+#{dpidLikeSrh}+'%'
+           </if>
+           <if test="dpidLikeIgnCaseSrh != '' ">
+              AND UPPER(DpId) like '%'+UPPER(#{dpidLikeIgnCaseSrh})+'%'
+           </if>
+           <if test="dpidIgnCaseSrh != '' ">
+              AND UPPER(DpId) = UPPER(#{dpidIgnCaseSrh})
+           </if>
+           <if test="dpidIsNotEmptySrh != '' ">
+              AND (DpId is not null and DpId <![CDATA[ <> ]]> '')
+           </if>
+           <if test="dpidIsEmptySrh != '' ">
+              AND (DpId is null or DpId = '')
+           </if>
+           <if test="genderLikeSrh != '' ">
+              AND Gender like '%'+#{genderLikeSrh}+'%'
+           </if>
+           <if test="genderLikeIgnCaseSrh != '' ">
+              AND UPPER(Gender) like '%'+UPPER(#{genderLikeIgnCaseSrh})+'%'
+           </if>
+           <if test="genderIgnCaseSrh != '' ">
+              AND UPPER(Gender) = UPPER(#{genderIgnCaseSrh})
+           </if>
+           <if test="genderIsNotEmptySrh != '' ">
+              AND (Gender is not null and Gender <![CDATA[ <> ]]> '')
+           </if>
+           <if test="genderIsEmptySrh != '' ">
+              AND (Gender is null or Gender = '')
+           </if>
+           <if test="telLikeSrh != '' ">
+              AND Tel like '%'+#{telLikeSrh}+'%'
+           </if>
+           <if test="telLikeIgnCaseSrh != '' ">
+              AND UPPER(Tel) like '%'+UPPER(#{telLikeIgnCaseSrh})+'%'
+           </if>
+           <if test="telIgnCaseSrh != '' ">
+              AND UPPER(Tel) = UPPER(#{telIgnCaseSrh})
+           </if>
+           <if test="telIsNotEmptySrh != '' ">
+              AND (Tel is not null and Tel <![CDATA[ <> ]]> '')
+           </if>
+           <if test="telIsEmptySrh != '' ">
+              AND (Tel is null or Tel = '')
+           </if>
+           <if test="addrLikeSrh != '' ">
+              AND Addr like '%'+#{addrLikeSrh}+'%'
+           </if>
+           <if test="addrLikeIgnCaseSrh != '' ">
+              AND UPPER(Addr) like '%'+UPPER(#{addrLikeIgnCaseSrh})+'%'
+           </if>
+           <if test="addrIgnCaseSrh != '' ">
+              AND UPPER(Addr) = UPPER(#{addrIgnCaseSrh})
+           </if>
+           <if test="addrIsNotEmptySrh != '' ">
+              AND (Addr is not null and Addr <![CDATA[ <> ]]> '')
+           </if>
+           <if test="addrIsEmptySrh != '' ">
+              AND (Addr is null or Addr = '')
+           </if>
+           <if test="ageLikeSrh != '' ">
+              AND Age like '%'+#{ageLikeSrh}+'%'
+           </if>
+           <if test="ageLikeIgnCaseSrh != '' ">
+              AND UPPER(Age) like '%'+UPPER(#{ageLikeIgnCaseSrh})+'%'
+           </if>
+           <if test="ageIgnCaseSrh != '' ">
+              AND UPPER(Age) = UPPER(#{ageIgnCaseSrh})
+           </if>
+           <if test="ageIsNotEmptySrh != '' ">
+              AND (Age is not null and Age <![CDATA[ <> ]]> '')
+           </if>
+           <if test="ageIsEmptySrh != '' ">
+              AND (Age is null or Age = '')
+           </if>
+           <if test="gfempLikeSrh != '' ">
+              AND GfEmp like '%'+#{gfempLikeSrh}+'%'
+           </if>
+           <if test="gfempLikeIgnCaseSrh != '' ">
+              AND UPPER(GfEmp) like '%'+UPPER(#{gfempLikeIgnCaseSrh})+'%'
+           </if>
+           <if test="gfempIgnCaseSrh != '' ">
+              AND UPPER(GfEmp) = UPPER(#{gfempIgnCaseSrh})
+           </if>
+           <if test="gfempIsNotEmptySrh != '' ">
+              AND (GfEmp is not null and GfEmp <![CDATA[ <> ]]> '')
+           </if>
+           <if test="gfempIsEmptySrh != '' ">
+              AND (GfEmp is null or GfEmp = '')
+           </if>
+
+        </where>
+	</sql>
+	
+	<select id="selectEmployeeList" resultType="com.fpg.ec.group.model.Employee" parameterType="com.fpg.ec.group.model.condition.EmployeeCondition">
+		select a.* from (
+		select Xuid, EmpId, EmpNm, DpId, Gender, Tel, Addr, Age, GfEmp, GfTm, TxEmp, TxTm
+			,ROW_NUMBER() OVER (
+					<choose>
+					    <when test="orderByList !=null and orderByList.size > 0 ">
+					         order by 
+						     <foreach collection="orderByList" item="orderByField" open="" close="" separator=",">
+					            ${orderByField}
+					         </foreach>
+					    </when>
+					    <otherwise>
+					         order by Xuid
+					    </otherwise>
+					</choose>
+			) AS rownum
+			<include refid="selectEmployeeListConditions" />
+		) a
+		<where>
+		   <if test="startCount != '' " >
+		      rownum <![CDATA[ >= ]]> #{startCount}
+		   </if>
+		   <if test="endCount != '' " >
+		      AND rownum <![CDATA[ <= ]]> #{endCount}
+		   </if>
+		</where>
+	</select>
+
+	<select id="selectEmployeeListCount" resultType="java.lang.Integer" parameterType="com.fpg.ec.group.model.condition.EmployeeCondition">
+		select count(1) totalCount
+		<include refid="selectEmployeeListConditions" />
+	</select>
+    <!-- Employee End-Employee -->
+	
+
+  
+   <!-- customMethod ####################################################### -->
+   
+   
+</mapper>
+	

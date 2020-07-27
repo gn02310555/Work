@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fpg.ec.group.dao.DpDAO" >
+   <resultMap id="BaseResultMap" type="com.fpg.ec.group.model.Dp" >
+      
+      <id column="Xuid" property="xuid" jdbcType="NVARCHAR" />
+      <result column="DpId" property="dpid" jdbcType="NVARCHAR" />
+      <result column="DpNm" property="dpnm" jdbcType="NVARCHAR" />
+
+   </resultMap>
+   <sql id="BaseCol" >
+  	    Xuid, DpId, DpNm
+   </sql>
+   
+   <resultMap id="BaseResultMapWithData" type="com.fpg.ec.group.model.Dp" extends="BaseResultMap" >
+      
+   </resultMap>
+   <sql id="BaseColWithoutData" >
+  	  
+   </sql>
+   
+   <insert id="insert" parameterType="com.fpg.ec.group.model.Dp" >
+      insert into Dp (<include refid="BaseCol" />)
+      values (#{xuid,jdbcType=NVARCHAR}, #{dpid,jdbcType=NVARCHAR}, #{dpnm,jdbcType=NVARCHAR})
+   </insert>
+  
+   <insert id="insertSelective" parameterType="com.fpg.ec.group.model.Dp" >
+      insert into Dp
+      <trim prefix="(" suffix=")" suffixOverrides="," >
+         
+         <if test="xuid != null ">
+             Xuid,
+         </if>
+         <if test="dpid != null ">
+             DpId,
+         </if>
+         <if test="dpnm != null ">
+             DpNm,
+         </if>
+
+	  </trim>
+	  <trim prefix="values (" suffix=")" suffixOverrides="," >
+	     
+         <if test="xuid != null ">
+             #{xuid,jdbcType=NVARCHAR},
+         </if>
+         <if test="dpid != null ">
+             #{dpid,jdbcType=NVARCHAR},
+         </if>
+         <if test="dpnm != null ">
+             #{dpnm,jdbcType=NVARCHAR},
+         </if>
+
+	  </trim>
+   </insert>
+  
+   <select id="selectListBySelective" resultMap="BaseResultMap" parameterType="com.fpg.ec.group.model.Dp" >
+      select <include refid="BaseCol" />
+      from Dp
+      <where>
+         
+         <if test="xuid != '' ">
+            Xuid = #{xuid,jdbcType=NVARCHAR}
+         </if>
+         <if test="dpid != '' ">
+            AND DpId = #{dpid,jdbcType=NVARCHAR}
+         </if>
+         <if test="dpnm != '' ">
+            AND DpNm = #{dpnm,jdbcType=NVARCHAR}
+         </if>
+
+      </where>
+   </select>
+     
+   <delete id="deleteBySelective" parameterType="com.fpg.ec.group.model.Dp" >
+      delete from Dp
+      <where>
+         
+         <if test="xuid != '' ">
+            Xuid = #{xuid,jdbcType=NVARCHAR}
+         </if>
+         <if test="dpid != '' ">
+            AND DpId = #{dpid,jdbcType=NVARCHAR}
+         </if>
+         <if test="dpnm != '' ">
+            AND DpNm = #{dpnm,jdbcType=NVARCHAR}
+         </if>
+
+      </where>
+   </delete>
+   
+    
+   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+      select <include refid="BaseCol" />
+      from Dp
+      where Xuid = #{xuid,jdbcType=NVARCHAR}
+   </select>
+   
+   <update id="updateByPrimaryKey" parameterType="com.fpg.ec.group.model.Dp" >
+      update Dp
+      set 
+         
+         DpId = #{dpid,jdbcType=NVARCHAR}, 
+         DpNm = #{dpnm,jdbcType=NVARCHAR}
+
+      where Xuid = #{xuid,jdbcType=NVARCHAR}
+   </update>
+
+   <update id="updateByPrimaryKeySelective" parameterType="com.fpg.ec.group.model.Dp" >
+      update Dp
+      <set>
+         
+         <if test="dpid != null ">
+            DpId = #{dpid,jdbcType=NVARCHAR},
+         </if>
+         <if test="dpnm != null ">
+            DpNm = #{dpnm,jdbcType=NVARCHAR},
+         </if>
+
+      </set>
+      where Xuid = #{xuid,jdbcType=NVARCHAR}
+   </update>
+
+   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+      delete from Dp
+      where Xuid = #{xuid,jdbcType=NVARCHAR}
+   </delete>
+   
+</mapper>

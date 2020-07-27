@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx" 
+        xmlns:task="http://www.springframework.org/schema/task"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+	    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+                http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.2.xsd" > 	
+
+    <!-- JDBC直接連線 -->	
+<!--     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"> -->
+<!-- 		<property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver" /> -->
+<!-- 		<property name="url" value="jdbc:sqlserver://localhost;DatabaseName=jason" /> -->
+<!-- 		<property name="username" value="jason" /> -->
+<!-- 		<property name="password" value="Aa123456" />  -->
+<!-- 	</bean> -->
+	
+	<!-- 讀取Property -->
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>WEB-INF/dbtype.properties</value>
+			</list>
+		</property>
+	</bean>
+    
+	<!-- 資料庫配置 JNDI -->
+    <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName" value="java:comp/env/jdbc/ecp"/>
+    </bean>
+	
+    <!-- define the SqlSessionFactory(要放在注入BO之前，才可協助檢查SQL MAP Error) -->  
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
+        <property name="dataSource" ref="dataSource" />  
+		<property name="configLocation" value="/WEB-INF/myBatisConfig.xml"/>
+		<property name="mapperLocations">
+   			<list>
+   			   <value>classpath:com/fpg/ec/group/dao/${dbtype}/xml/*.xml</value>
+   			   <value>classpath:com/fpg/ec/group/dao/xml/*.xml</value>
+   			</list>
+  		</property>
+   	</bean>  
+   	
+   	<!-- 註冊DAO -->
+   <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+         <property name="basePackage" value="com.fpg.ec.group.dao" />
+   </bean>
+      	
+	<!-- 管理資料庫交易 Transaction Manager -->  
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
+	    <property name="dataSource" ref="dataSource" />  
+	</bean>  
+	  
+	<!-- AOP管理資料庫交易 Transaction Manager advice -->
+    <tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="*" isolation="READ_COMMITTED" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+        </tx:attributes> 
+    </tx:advice>
+    
+    <!-- Scans within the base package of the application for @Components to configure as beans -->
+    <!-- @Controller, @Service, @Configuration, etc. -->
+    <context:component-scan base-package="com.fpg.ec.*" />
+    
+    <!-- AOP管理資料庫交易直接將Transaction Managet直接注入到BO METHOD中 --> 
+    <aop:config>
+        <aop:pointcut id="transactionPointcut" expression="execution(* com.fpg.ec.*.bo.*.*(..))"/>
+        <aop:advisor pointcut-ref="transactionPointcut" advice-ref="transactionAdvice"/>
+    </aop:config>
+
+</beans>

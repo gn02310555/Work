@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fpg.ec.group.dao.EmployeeDAO" >
+   <resultMap id="BaseResultMap" type="com.fpg.ec.group.model.Employee" >
+      
+      <id column="Xuid" property="xuid" jdbcType="NVARCHAR" />
+      <result column="EmpId" property="empid" jdbcType="NVARCHAR" />
+      <result column="EmpNm" property="empnm" jdbcType="NVARCHAR" />
+      <result column="DpId" property="dpid" jdbcType="NVARCHAR" />
+      <result column="Gender" property="gender" jdbcType="NVARCHAR" />
+      <result column="Tel" property="tel" jdbcType="NVARCHAR" />
+      <result column="Addr" property="addr" jdbcType="NVARCHAR" />
+      <result column="Age" property="age" jdbcType="NVARCHAR" />
+      <result column="GfEmp" property="gfemp" jdbcType="NVARCHAR" />
+      <result column="GfTm" property="gftm" jdbcType="NVARCHAR" />
+      <result column="TxEmp" property="txemp" jdbcType="NVARCHAR" />
+      <result column="TxTm" property="txtm" jdbcType="NVARCHAR" />
+
+   </resultMap>
+   <sql id="BaseCol" >
+  	    Xuid, EmpId, EmpNm, DpId, Gender, Tel, Addr, Age, GfEmp, GfTm, TxEmp, TxTm
+   </sql>
+   
+   <resultMap id="BaseResultMapWithData" type="com.fpg.ec.group.model.Employee" extends="BaseResultMap" >
+      
+   </resultMap>
+   <sql id="BaseColWithoutData" >
+  	  
+   </sql>
+   
+   <insert id="insert" parameterType="com.fpg.ec.group.model.Employee" >
+      insert into Employee (<include refid="BaseCol" />)
+      values (#{xuid,jdbcType=NVARCHAR}, #{empid,jdbcType=NVARCHAR}, #{empnm,jdbcType=NVARCHAR}, #{dpid,jdbcType=NVARCHAR}, #{gender,jdbcType=NVARCHAR}, #{tel,jdbcType=NVARCHAR}, #{addr,jdbcType=NVARCHAR}, #{age,jdbcType=NVARCHAR}, #{gfemp,jdbcType=NVARCHAR}, #{gftm,jdbcType=NVARCHAR}, #{txemp,jdbcType=NVARCHAR}, #{txtm,jdbcType=NVARCHAR})
+   </insert>
+  
+   <insert id="insertSelective" parameterType="com.fpg.ec.group.model.Employee" >
+      insert into Employee
+      <trim prefix="(" suffix=")" suffixOverrides="," >
+         
+         <if test="xuid != null ">
+             Xuid,
+         </if>
+         <if test="empid != null ">
+             EmpId,
+         </if>
+         <if test="empnm != null ">
+             EmpNm,
+         </if>
+         <if test="dpid != null ">
+             DpId,
+         </if>
+         <if test="gender != null ">
+             Gender,
+         </if>
+         <if test="tel != null ">
+             Tel,
+         </if>
+         <if test="addr != null ">
+             Addr,
+         </if>
+         <if test="age != null ">
+             Age,
+         </if>
+         <if test="gfemp != null ">
+             GfEmp,
+         </if>
+         <if test="gftm != null ">
+             GfTm,
+         </if>
+         <if test="txemp != null ">
+             TxEmp,
+         </if>
+         <if test="txtm != null ">
+             TxTm,
+         </if>
+
+	  </trim>
+	  <trim prefix="values (" suffix=")" suffixOverrides="," >
+	     
+         <if test="xuid != null ">
+             #{xuid,jdbcType=NVARCHAR},
+         </if>
+         <if test="empid != null ">
+             #{empid,jdbcType=NVARCHAR},
+         </if>
+         <if test="empnm != null ">
+             #{empnm,jdbcType=NVARCHAR},
+         </if>
+         <if test="dpid != null ">
+             #{dpid,jdbcType=NVARCHAR},
+         </if>
+         <if test="gender != null ">
+             #{gender,jdbcType=NVARCHAR},
+         </if>
+         <if test="tel != null ">
+             #{tel,jdbcType=NVARCHAR},
+         </if>
+         <if test="addr != null ">
+             #{addr,jdbcType=NVARCHAR},
+         </if>
+         <if test="age != null ">
+             #{age,jdbcType=NVARCHAR},
+         </if>
+         <if test="gfemp != null ">
+             #{gfemp,jdbcType=NVARCHAR},
+         </if>
+         <if test="gftm != null ">
+             #{gftm,jdbcType=NVARCHAR},
+         </if>
+         <if test="txemp != null ">
+             #{txemp,jdbcType=NVARCHAR},
+         </if>
+         <if test="txtm != null ">
+             #{txtm,jdbcType=NVARCHAR},
+         </if>
+
+	  </trim>
+   </insert>
+  
+   <select id="selectListBySelective" resultMap="BaseResultMap" parameterType="com.fpg.ec.group.model.Employee" >
+      select <include refid="BaseCol" />
+      from Employee
+      <where>
+         
+         <if test="xuid != '' ">
+            Xuid = #{xuid,jdbcType=NVARCHAR}
+         </if>
+         <if test="empid != '' ">
+            AND EmpId = #{empid,jdbcType=NVARCHAR}
+         </if>
+         <if test="empnm != '' ">
+            AND EmpNm = #{empnm,jdbcType=NVARCHAR}
+         </if>
+         <if test="dpid != '' ">
+            AND DpId = #{dpid,jdbcType=NVARCHAR}
+         </if>
+         <if test="gender != '' ">
+            AND Gender = #{gender,jdbcType=NVARCHAR}
+         </if>
+         <if test="tel != '' ">
+            AND Tel = #{tel,jdbcType=NVARCHAR}
+         </if>
+         <if test="addr != '' ">
+            AND Addr = #{addr,jdbcType=NVARCHAR}
+         </if>
+         <if test="age != '' ">
+            AND Age = #{age,jdbcType=NVARCHAR}
+         </if>
+         <if test="gfemp != '' ">
+            AND GfEmp = #{gfemp,jdbcType=NVARCHAR}
+         </if>
+         <if test="gftm != '' ">
+            AND GfTm = #{gftm,jdbcType=NVARCHAR}
+         </if>
+         <if test="txemp != '' ">
+            AND TxEmp = #{txemp,jdbcType=NVARCHAR}
+         </if>
+         <if test="txtm != '' ">
+            AND TxTm = #{txtm,jdbcType=NVARCHAR}
+         </if>
+
+      </where>
+   </select>
+     
+   <delete id="deleteBySelective" parameterType="com.fpg.ec.group.model.Employee" >
+      delete from Employee
+      <where>
+         
+         <if test="xuid != '' ">
+            Xuid = #{xuid,jdbcType=NVARCHAR}
+         </if>
+         <if test="empid != '' ">
+            AND EmpId = #{empid,jdbcType=NVARCHAR}
+         </if>
+         <if test="empnm != '' ">
+            AND EmpNm = #{empnm,jdbcType=NVARCHAR}
+         </if>
+         <if test="dpid != '' ">
+            AND DpId = #{dpid,jdbcType=NVARCHAR}
+         </if>
+         <if test="gender != '' ">
+            AND Gender = #{gender,jdbcType=NVARCHAR}
+         </if>
+         <if test="tel != '' ">
+            AND Tel = #{tel,jdbcType=NVARCHAR}
+         </if>
+         <if test="addr != '' ">
+            AND Addr = #{addr,jdbcType=NVARCHAR}
+         </if>
+         <if test="age != '' ">
+            AND Age = #{age,jdbcType=NVARCHAR}
+         </if>
+         <if test="gfemp != '' ">
+            AND GfEmp = #{gfemp,jdbcType=NVARCHAR}
+         </if>
+         <if test="gftm != '' ">
+            AND GfTm = #{gftm,jdbcType=NVARCHAR}
+         </if>
+         <if test="txemp != '' ">
+            AND TxEmp = #{txemp,jdbcType=NVARCHAR}
+         </if>
+         <if test="txtm != '' ">
+            AND TxTm = #{txtm,jdbcType=NVARCHAR}
+         </if>
+
+      </where>
+   </delete>
+   
+    
+   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+      select <include refid="BaseCol" />
+      from Employee
+      where Xuid = #{xuid,jdbcType=NVARCHAR}
+   </select>
+   
+   <update id="updateByPrimaryKey" parameterType="com.fpg.ec.group.model.Employee" >
+      update Employee
+      set 
+         
+         EmpId = #{empid,jdbcType=NVARCHAR}, 
+         EmpNm = #{empnm,jdbcType=NVARCHAR}, 
+         DpId = #{dpid,jdbcType=NVARCHAR}, 
+         Gender = #{gender,jdbcType=NVARCHAR}, 
+         Tel = #{tel,jdbcType=NVARCHAR}, 
+         Addr = #{addr,jdbcType=NVARCHAR}, 
+         Age = #{age,jdbcType=NVARCHAR}, 
+         GfEmp = #{gfemp,jdbcType=NVARCHAR}, 
+         GfTm = #{gftm,jdbcType=NVARCHAR}, 
+         TxEmp = #{txemp,jdbcType=NVARCHAR}, 
+         TxTm = #{txtm,jdbcType=NVARCHAR}
+
+      where Xuid = #{xuid,jdbcType=NVARCHAR}
+   </update>
+
+   <update id="updateByPrimaryKeySelective" parameterType="com.fpg.ec.group.model.Employee" >
+      update Employee
+      <set>
+         
+         <if test="empid != null ">
+            EmpId = #{empid,jdbcType=NVARCHAR},
+         </if>
+         <if test="empnm != null ">
+            EmpNm = #{empnm,jdbcType=NVARCHAR},
+         </if>
+         <if test="dpid != null ">
+            DpId = #{dpid,jdbcType=NVARCHAR},
+         </if>
+         <if test="gender != null ">
+            Gender = #{gender,jdbcType=NVARCHAR},
+         </if>
+         <if test="tel != null ">
+            Tel = #{tel,jdbcType=NVARCHAR},
+         </if>
+         <if test="addr != null ">
+            Addr = #{addr,jdbcType=NVARCHAR},
+         </if>
+         <if test="age != null ">
+            Age = #{age,jdbcType=NVARCHAR},
+         </if>
+         <if test="gfemp != null ">
+            GfEmp = #{gfemp,jdbcType=NVARCHAR},
+         </if>
+         <if test="gftm != null ">
+            GfTm = #{gftm,jdbcType=NVARCHAR},
+         </if>
+         <if test="txemp != null ">
+            TxEmp = #{txemp,jdbcType=NVARCHAR},
+         </if>
+         <if test="txtm != null ">
+            TxTm = #{txtm,jdbcType=NVARCHAR},
+         </if>
+
+      </set>
+      where Xuid = #{xuid,jdbcType=NVARCHAR}
+   </update>
+
+   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+      delete from Employee
+      where Xuid = #{xuid,jdbcType=NVARCHAR}
+   </delete>
+   
+</mapper>
