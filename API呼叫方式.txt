@@ -14,7 +14,7 @@ params:empid,empnm,dpid,gender,tel,addr,age
 4.員工查詢
 210.61.14.112/wsServer/EmpService/empSearch.do
 params:empid,empnm,dpid,gender,tel,addr,age,
-分頁params: startcnt(資料起始位置，如:1), endcnt(資料結束位置，如:10)，可列出1-10筆資料
+分頁params: startcnt(資料起始位置，如:1), endcnt(資料結束位置，如:10)，可列出資料庫第1-10筆資料
 
 
 5.部門建檔
