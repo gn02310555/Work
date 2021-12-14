@@ -9,7 +9,7 @@
 	<properties>
 		<spring.version>4.2.4.RELEASE</spring.version><!-- Spring 版本號 -->
 		<jackson.version>2.6.4</jackson.version><!-- Jackson 版本號 -->
-		<log4j.version>2.5</log4j.version><!-- Log4j 版本號 -->
+		<log4j.version>2.16.0</log4j.version><!-- Log4j 版本號 -->
 		<poi.version>3.13</poi.version><!-- POI 版本號 -->
 	</properties>
 
